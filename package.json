@@ -3,6 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "https://devtobias.github.io/eunomia-frontend/",
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!<rootDir>/node_modules/",
+      "!<rootDir>/src/index.jsx",
+      "!<rootDir>/src/utils/reportWebVitals.jsx"
+    ]
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
