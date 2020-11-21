@@ -6,8 +6,6 @@
 [![Codecov](https://img.shields.io/codecov/c/github/devtobias/eunomia-frontend)](https://codecov.io/gh/devtobias/eunomia-frontend)
 [![GitHub license](https://img.shields.io/github/license/devtobias/eunomia-frontend)](https://github.com/DevTobias/eunomia-frontend/blob/main/LICENSE)
 
-[![Discord](https://img.shields.io/discord/670656886382788608?logo=discord)](https://discord.gg/E72mnpj) 
-
 ## Table of content
 
 * [Features](#features)

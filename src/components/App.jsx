@@ -1,14 +1,26 @@
 import React from 'react';
-import logo from '../img/logo.svg';
+import { Switch, Route, BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from '../app/store';
+
+import MainNavbar from './navigation/Navbar.component';
+import Home from './home/Home.component';
+
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        Eunomia WG-Tracker
-      </header>
+      <Provider store={store}>
+        <BrowserRouter>
+          <MainNavbar />
+          <Switch>
+            <Route path="/">
+              <Home />
+            </Route>
+          </Switch>
+        </BrowserRouter>
+      </Provider>
     </div>
   );
 }
