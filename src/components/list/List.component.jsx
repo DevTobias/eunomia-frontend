@@ -109,7 +109,8 @@ export default class TaskList extends React.Component {
       const newData = data;
       newData.splice(index, 1);
       return { data: newData };
-    });
+    }, () => this.updatePercent());
+
     open('topEnd', 'success', 'Successfully deleted task');
     this.updatePercent();
   }
