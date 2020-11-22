@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/eunomia-frontend/static/css/main.791656af.chunk.css",
-    "main.js": "/eunomia-frontend/static/js/main.07caea70.chunk.js",
-    "main.js.map": "/eunomia-frontend/static/js/main.07caea70.chunk.js.map",
-    "runtime-main.js": "/eunomia-frontend/static/js/runtime-main.7c6b7547.js",
-    "runtime-main.js.map": "/eunomia-frontend/static/js/runtime-main.7c6b7547.js.map",
+    "main.css": "/eunomia-frontend/static/css/main.3175eb45.chunk.css",
+    "main.js": "/eunomia-frontend/static/js/main.0f785c72.chunk.js",
+    "main.js.map": "/eunomia-frontend/static/js/main.0f785c72.chunk.js.map",
+    "runtime-main.js": "/eunomia-frontend/static/js/runtime-main.75182cab.js",
+    "runtime-main.js.map": "/eunomia-frontend/static/js/runtime-main.75182cab.js.map",
     "static/css/2.bfa35391.chunk.css": "/eunomia-frontend/static/css/2.bfa35391.chunk.css",
-    "static/js/2.5d4270f1.chunk.js": "/eunomia-frontend/static/js/2.5d4270f1.chunk.js",
-    "static/js/2.5d4270f1.chunk.js.map": "/eunomia-frontend/static/js/2.5d4270f1.chunk.js.map",
-    "static/js/3.70afbc2d.chunk.js": "/eunomia-frontend/static/js/3.70afbc2d.chunk.js",
-    "static/js/3.70afbc2d.chunk.js.map": "/eunomia-frontend/static/js/3.70afbc2d.chunk.js.map",
+    "static/js/2.cc5f0ddb.chunk.js": "/eunomia-frontend/static/js/2.cc5f0ddb.chunk.js",
+    "static/js/2.cc5f0ddb.chunk.js.map": "/eunomia-frontend/static/js/2.cc5f0ddb.chunk.js.map",
+    "static/js/3.81f9304b.chunk.js": "/eunomia-frontend/static/js/3.81f9304b.chunk.js",
+    "static/js/3.81f9304b.chunk.js.map": "/eunomia-frontend/static/js/3.81f9304b.chunk.js.map",
     "index.html": "/eunomia-frontend/index.html",
     "static/css/2.bfa35391.chunk.css.map": "/eunomia-frontend/static/css/2.bfa35391.chunk.css.map",
-    "static/css/main.791656af.chunk.css.map": "/eunomia-frontend/static/css/main.791656af.chunk.css.map",
-    "static/js/2.5d4270f1.chunk.js.LICENSE.txt": "/eunomia-frontend/static/js/2.5d4270f1.chunk.js.LICENSE.txt",
+    "static/css/main.3175eb45.chunk.css.map": "/eunomia-frontend/static/css/main.3175eb45.chunk.css.map",
+    "static/js/2.cc5f0ddb.chunk.js.LICENSE.txt": "/eunomia-frontend/static/js/2.cc5f0ddb.chunk.js.LICENSE.txt",
     "static/media/logo.3b2b429f.svg": "/eunomia-frontend/static/media/logo.3b2b429f.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.7c6b7547.js",
+    "static/js/runtime-main.75182cab.js",
     "static/css/2.bfa35391.chunk.css",
-    "static/js/2.5d4270f1.chunk.js",
-    "static/css/main.791656af.chunk.css",
-    "static/js/main.07caea70.chunk.js"
+    "static/js/2.cc5f0ddb.chunk.js",
+    "static/css/main.3175eb45.chunk.css",
+    "static/js/main.0f785c72.chunk.js"
   ]
 }
