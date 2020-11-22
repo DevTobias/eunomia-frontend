@@ -5,6 +5,7 @@ import store from '../app/store';
 
 import MainNavbar from './navigation/Navbar.component';
 import Home from './home/Home.component';
+import PrivateList from './private-list/PrivateList.component';
 
 import './App.css';
 
@@ -15,6 +16,9 @@ function App() {
         <BrowserRouter>
           <MainNavbar />
           <Switch>
+            <Route path="/eunomia-frontend/private-tasks">
+              <PrivateList />
+            </Route>
             <Route path="/">
               <Home />
             </Route>
