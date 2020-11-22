@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Settings from '../settings/Settings.component';
-import ListDemo from '../list/List.component';
+import TaskList from '../list/List.component';
 
 import './PrivateList.css';
 
@@ -15,7 +15,7 @@ export default function PrivateList() {
     <div className="App">
       <Settings />
       <div style={ListStyle}>
-        <ListDemo />
+        <TaskList showUser />
       </div>
     </div>
   );
