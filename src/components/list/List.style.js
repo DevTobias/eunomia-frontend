@@ -1,11 +1,11 @@
 const listStyle = {
   // backgroundColor: 'white',
-  border: '2px solid #3C3F43',
   padding: 10,
 };
 
 const itemStyle = {
-  border: '2px solid #3C3F43',
+  borderLeft: '1px solid #292D33',
+  borderRight: '1px solid #292D33',
   margin: '5px 0',
 };
 

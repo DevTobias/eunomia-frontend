@@ -15,7 +15,7 @@ export default function PrivateList() {
     <div className="App">
       <Settings />
       <div style={ListStyle}>
-        <TaskList showUser />
+        <TaskList showUser={false} />
       </div>
     </div>
   );
