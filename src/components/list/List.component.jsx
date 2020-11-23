@@ -11,6 +11,8 @@ import {
 } from 'rsuite';
 import ContentEditable from 'react-contenteditable';
 
+import { CirclePicker } from 'react-color';
+
 import {
   listStyle, itemStyle, beforeStyle, checkedBeforeStyle, styleCenter, baseStyle,
   slimText, date, titleStyle, checkedTitleStyle, inputStyles,
@@ -36,11 +38,13 @@ export default class TaskList extends React.Component {
     this.handleAddClick = this.handleAddClick.bind(this);
     this.decline = this.decline.bind(this);
     this.increase = this.increase.bind(this);
+    this.handleChangeComplete = this.handleChangeComplete.bind(this);
 
     this.state = {
       status: null,
       percent: 0,
       color: '#3385ff',
+      tagColor: '#34C3FF',
       data: [
         {
           title: 'Hong Kong independent travel',
@@ -124,6 +128,7 @@ export default class TaskList extends React.Component {
         creator: 'Yvnonne',
         date: '2017.10.13 14:50',
         checked: false,
+        tagColor: this.state.tagColor,
       };
 
       this.setState(({ data }) => {
@@ -142,6 +147,10 @@ export default class TaskList extends React.Component {
     const title = event.target.value;
     // eslint-disable-next-line react/destructuring-assignment
     this.state.data[index].title = title;
+  }
+
+  handleChangeComplete(color) {
+    this.setState({ tagColor: color.hex });
   }
 
   updatePercent() {
@@ -179,9 +188,24 @@ export default class TaskList extends React.Component {
       percent, color, status, data,
     } = this.state;
 
+    const colors = ['#B80000', '#DB3E00', '#FF9800', '#008B02', '#34C3FF', '#673AB7'];
+
     return (
       <List hover bordered sortable onSort={this.handleSortEnd} style={listStyle}>
-        <Line percent={percent} strokeColor={color} status={status} />
+        <FlexboxGrid>
+          <FlexboxGrid.Item colspan={16}>
+            <Line percent={Math.round(percent)} strokeColor={color} status={status} />
+          </FlexboxGrid.Item>
+          <FlexboxGrid.Item colspan={8} style={{ padding: '10px 0' }}>
+            <CirclePicker
+              circleSize={14}
+              circleSpacing={7}
+              colors={colors}
+              onChangeComplete={this.handleChangeComplete}
+            />
+          </FlexboxGrid.Item>
+        </FlexboxGrid>
+
         <div>
           <InputGroup style={inputStyles}>
             <Input id="input" placeholder="Add Task" autoComplete="off" />

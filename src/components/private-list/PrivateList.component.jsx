@@ -8,6 +8,7 @@ import './PrivateList.css';
 const ListStyle = {
   margin: '3em auto',
   maxWidth: '75%',
+  display: 'flex',
 };
 
 export default function PrivateList() {

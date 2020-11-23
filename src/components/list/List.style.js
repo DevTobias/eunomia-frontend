@@ -1,6 +1,7 @@
 const listStyle = {
   // backgroundColor: 'white',
   padding: 10,
+  margin: 20,
 };
 
 const itemStyle = {
