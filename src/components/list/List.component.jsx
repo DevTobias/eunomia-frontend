@@ -28,8 +28,12 @@ function open(placement, func, val) {
   });
 }
 
+// custom id for intput field (multiple lists)
+
 export default class TaskList extends React.Component {
-  constructor({ showUser }) {
+  constructor({
+    showUser, showDate, id, data,
+  }) {
     super();
 
     this.handleSortEnd = this.handleSortEnd.bind(this);
@@ -45,43 +49,12 @@ export default class TaskList extends React.Component {
       percent: 0,
       color: '#3385ff',
       tagColor: '#34C3FF',
-      data: [
-        {
-          title: 'Hong Kong independent travel',
-          icon: 'image',
-          creator: 'Yvnonne',
-          date: '2017.10.13 14:50',
-          checked: true,
-          tagColor: '#34C3FF',
-        },
-        {
-          title: 'Celebration of the Mid-Autumn festival',
-          icon: 'image',
-          creator: 'Daibiao',
-          date: '2017.10.13 14:50',
-          checked: false,
-          tagColor: '#FF9800',
-        },
-        {
-          title: 'Live to play basketball',
-          icon: 'film',
-          creator: 'Bidetoo',
-          date: '2017.10.13 14:50',
-          checked: false,
-          tagColor: '#34C3FF',
-        },
-        {
-          title: '2018 the legislature meeting broadcast live',
-          icon: 'film',
-          creator: 'Yvnonne',
-          date: '2017.10.13 14:50',
-          checked: false,
-          tagColor: '#673AB7',
-        },
-      ],
+      data,
     };
 
     this.showUser = showUser;
+    this.showDate = showDate;
+    this.id = id;
     this.percentStep = 10;
   }
 
@@ -120,7 +93,7 @@ export default class TaskList extends React.Component {
   }
 
   handleAddClick() {
-    const val = document.getElementById('input').value;
+    const val = document.getElementById(this.id).value;
     if (val) {
       const newEntry = {
         title: val,
@@ -137,7 +110,7 @@ export default class TaskList extends React.Component {
         return { data: newData };
       }, () => this.updatePercent());
 
-      document.getElementById('input').value = '';
+      document.getElementById(this.id).value = '';
       open('topEnd', 'success', 'Successfully added task');
     }
   }
@@ -155,12 +128,16 @@ export default class TaskList extends React.Component {
 
   updatePercent() {
     const { data } = this.state;
-    this.percentStep = 100 / data.length;
-    let count = 0;
-    data.forEach((element) => {
-      if (element.checked) count += 1;
-    });
-    this.changePercent(count * this.percentStep);
+    if (data.length) {
+      this.percentStep = 100 / data.length;
+      let count = 0;
+      data.forEach((element) => {
+        if (element.checked) count += 1;
+      });
+      this.changePercent(count * this.percentStep);
+    } else {
+      this.changePercent(100);
+    }
   }
 
   changePercent(nextPercent, callback) {
@@ -208,7 +185,7 @@ export default class TaskList extends React.Component {
 
         <div>
           <InputGroup style={inputStyles}>
-            <Input id="input" placeholder="Add Task" autoComplete="off" />
+            <Input id={this.id} placeholder="Add Task" autoComplete="off" />
             <InputGroup.Button onClick={this.handleAddClick} appearance="link" color="green">
               <Icon icon="plus-square" />
             </InputGroup.Button>
@@ -229,7 +206,13 @@ export default class TaskList extends React.Component {
               */}
 
               {/* Base information */}
-              <FlexboxGrid.Item colspan={21} style={{ ...styleCenter, ...baseStyle }}>
+              <FlexboxGrid.Item
+                colspan={21}
+                style={{
+                  ...styleCenter,
+                  ...baseStyle,
+                }}
+              >
                 <ContentEditable
                   spellCheck="false"
                   style={item.checked ? checkedTitleStyle : titleStyle}
@@ -242,10 +225,10 @@ export default class TaskList extends React.Component {
 
                 <div style={slimText}>
                   <div>
-                    {this.showUser ? <Icon icon="user-circle-o" style={{ paddingRight: 5 }} /> : null}
+                    {this.showUser ? <Icon icon="user-o" style={{ paddingRight: 5 }} /> : null}
                     {this.showUser ? ` ${item.creator}` : null}
                   </div>
-                  <div style={date}>{item.date}</div>
+                  {this.showDate ? <div style={date}>{item.date}</div> : null}
                 </div>
               </FlexboxGrid.Item>
 

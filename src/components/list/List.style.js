@@ -1,7 +1,9 @@
 const listStyle = {
   // backgroundColor: 'white',
-  padding: 10,
+  padding: 5,
   margin: 20,
+  maxWidth: 400,
+  width: 400,
 };
 
 const itemStyle = {
@@ -27,7 +29,7 @@ const styleCenter = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  height: '60px',
+  maxHeight: '60px',
 };
 
 const iconStyle = {
