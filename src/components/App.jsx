@@ -16,8 +16,35 @@ import GroupLeaderboard from './group-leaderboard/GroupLeaderboard';
 import './App.css';
 
 function isLoggedIn() {
-  return true;
+  return false;
 }
+
+const authNav = [
+  {
+    to: '/eunomia-frontend/',
+    key: '1',
+    icon: 'home',
+    name: 'Home',
+  },
+  {
+    to: '/eunomia-frontend/private-tasks',
+    key: '2',
+    icon: 'list',
+    name: 'Private Tasks',
+  },
+  {
+    to: '/eunomia-frontend/group-tasks',
+    key: '3',
+    icon: 'list',
+    name: 'Group Tasks',
+  },
+  {
+    to: '/eunomia-frontend/group-leaderboard',
+    key: '4',
+    icon: 'star',
+    name: 'Group Leaderboard',
+  },
+];
 
 function App() {
   return (
@@ -25,6 +52,7 @@ function App() {
       <Provider store={store}>
         <BrowserRouter>
           <Switch>
+
             <Route
               path="/eunomia-frontend/private-tasks"
               render={() => (
@@ -32,12 +60,13 @@ function App() {
                   <Redirect to="/eunomia-frontend/login" />
                 ) : (
                   <div>
-                    <MainNavbar />
+                    <MainNavbar navItems={authNav} />
                     <PrivateList />
                   </div>
                 )
               )}
             />
+
             <Route
               path="/eunomia-frontend/group-tasks"
               render={() => (
@@ -45,12 +74,13 @@ function App() {
                   <Redirect to="/eunomia-frontend/login" />
                 ) : (
                   <div>
-                    <MainNavbar />
+                    <MainNavbar navItems={authNav} />
                     <GroupList />
                   </div>
                 )
               )}
             />
+
             <Route
               path="/eunomia-frontend/group-leaderboard"
               render={() => (
@@ -58,27 +88,41 @@ function App() {
                   <Redirect to="/eunomia-frontend/login" />
                 ) : (
                   <div>
-                    <MainNavbar />
+                    <MainNavbar navItems={authNav} />
                     <GroupLeaderboard />
                   </div>
                 )
               )}
             />
-            <Route path="/eunomia-frontend/register">
-              <Register />
-            </Route>
-            <Route path="/eunomia-frontend/login">
-              <Login />
-            </Route>
+
             <Route
-              path="/eunomia-frontend/home"
+              path="/eunomia-frontend/register"
               render={() => (
                 <div>
-                  <MainNavbar />
+                  <Register />
+                </div>
+              )}
+            />
+
+            <Route
+              path="/eunomia-frontend/login"
+              render={() => (
+                <div>
+                  <Login />
+                </div>
+              )}
+            />
+
+            <Route
+              path="/eunomia-frontend/"
+              render={() => (
+                <div>
+                  <MainNavbar navItems={authNav} />
                   <Home />
                 </div>
               )}
             />
+
           </Switch>
         </BrowserRouter>
       </Provider>

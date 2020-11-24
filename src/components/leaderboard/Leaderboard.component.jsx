@@ -65,24 +65,24 @@ export default class Leaderboard extends React.Component {
       <div>
         <Table
           virtualized
-          height={400}
+          height={900}
           data={this.getData()}
           sortColumn={sortColumn}
           sortType={sortType}
           onSortColumn={this.handleSortColumn}
           loading={loading}
         >
-          <Column width={130}>
+          <Column width={225}>
             <HeaderCell>Full Name</HeaderCell>
             <Cell dataKey="fullName" />
           </Column>
 
-          <Column width={200} sortable>
+          <Column width={225} sortable>
             <HeaderCell>Tasks done</HeaderCell>
             <Cell dataKey="tasksDone" />
           </Column>
 
-          <Column width={200} sortable>
+          <Column width={225} sortable>
             <HeaderCell>Points</HeaderCell>
             <Cell dataKey="points" />
           </Column>

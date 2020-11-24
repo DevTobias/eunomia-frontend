@@ -13,7 +13,7 @@ import { toggle } from '../settings/settingsSlice';
 import './Navbar.css';
 
 const NavBarInstance = ({
-  onSelect, activeKey, appearance,
+  onSelect, activeKey, appearance, navItems,
 }) => {
   const dispatch = useDispatch();
 
@@ -50,41 +50,18 @@ const NavBarInstance = ({
           onSelect={onSelect}
           activeKey={activeKey}
         >
-          <ResponsiveNav.Item
-            componentClass={Link}
-            to="/eunomia-frontend/home"
-            eventKey="1"
-            icon={<Icon icon="home" />}
-          >
-            Home
-          </ResponsiveNav.Item>
+          {navItems.map((item) => (
 
-          <ResponsiveNav.Item
-            componentClass={Link}
-            to="/eunomia-frontend/private-tasks"
-            eventKey="2"
-            icon={<Icon icon="list" />}
-          >
-            Private Tasks
-          </ResponsiveNav.Item>
-
-          <ResponsiveNav.Item
-            componentClass={Link}
-            to="/eunomia-frontend/group-tasks"
-            eventKey="3"
-            icon={<Icon icon="list" />}
-          >
-            Group Tasks
-          </ResponsiveNav.Item>
-
-          <ResponsiveNav.Item
-            componentClass={Link}
-            to="/eunomia-frontend/group-leaderboard"
-            eventKey="4"
-            icon={<Icon icon="star" />}
-          >
-            Group Leaderboard
-          </ResponsiveNav.Item>
+            <ResponsiveNav.Item
+              key={item.key}
+              componentClass={Link}
+              to={item.to}
+              eventKey={item.key}
+              icon={<Icon icon={item.icon} />}
+            >
+              {item.name}
+            </ResponsiveNav.Item>
+          ))}
         </ResponsiveNav>
 
         <Nav pullRight onSelect={() => dispatch(toggle())}>

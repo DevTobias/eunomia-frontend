@@ -3,7 +3,8 @@
 
 import React from 'react';
 
-import Leaderboard from '../leaderboard/Leaderboard';
+import Leaderboard from '../leaderboard/Leaderboard.component';
+import Settings from '../settings/Settings.component';
 
 import './GroupLeaderboard.css';
 
@@ -31,6 +32,7 @@ const LeaderboardStyle = {
 export default function GroupLeaderboard() {
   return (
     <div style={LeaderboardStyle}>
+      <Settings />
       <Leaderboard data={exampleData} />
     </div>
   );
