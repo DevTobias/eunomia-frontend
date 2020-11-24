@@ -29,7 +29,7 @@ const NavBarInstance = ({ onSelect, activeKey, appearance }) => {
     <Navbar appearance={appearance} style={navStyle}>
 
       <Navbar.Header style={headerStyle} className="navbar-brand logo">
-        <Link to="/eunomia-frontend/home">
+        <Link to="/eunomia-frontend/">
           <img
             alt="logo"
             src={`${process.env.PUBLIC_URL}/logo.svg`}
