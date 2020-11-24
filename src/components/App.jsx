@@ -15,10 +15,6 @@ import GroupLeaderboard from './group-leaderboard/GroupLeaderboard';
 
 import './App.css';
 
-function isLoggedIn() {
-  return false;
-}
-
 const authNav = [
   {
     to: '/eunomia-frontend/',
@@ -47,6 +43,10 @@ const authNav = [
 ];
 
 function App() {
+  function isLoggedIn() {
+    return false;
+  }
+
   return (
     <div className="App">
       <Provider store={store}>
