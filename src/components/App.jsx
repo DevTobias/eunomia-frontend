@@ -42,11 +42,11 @@ const authNav = [
   },
 ];
 
-function App() {
-  function isLoggedIn() {
-    return false;
-  }
+export function isLoggedIn() {
+  return false;
+}
 
+function App() {
   return (
     <div className="App">
       <Provider store={store}>
