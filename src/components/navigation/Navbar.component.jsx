@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unused-state */
 /* eslint-disable react/prop-types */
 
 import React, { Component } from 'react';
@@ -11,7 +12,9 @@ import { toggle } from '../settings/settingsSlice';
 
 import './Navbar.css';
 
-const NavBarInstance = ({ onSelect, activeKey, appearance }) => {
+const NavBarInstance = ({
+  onSelect, activeKey, appearance,
+}) => {
   const dispatch = useDispatch();
 
   const headerStyle = {
@@ -93,12 +96,13 @@ const NavBarInstance = ({ onSelect, activeKey, appearance }) => {
 };
 
 export default class MainNavbar extends Component {
-  constructor() {
+  constructor(navItems) {
     super();
     this.handleSelect = this.handleSelect.bind(this);
 
     this.state = {
       activeKey: '1',
+      navItems: navItems.navItems,
     };
   }
 
@@ -109,10 +113,11 @@ export default class MainNavbar extends Component {
   }
 
   render() {
-    const { activeKey } = this.state;
+    const { activeKey, navItems } = this.state;
     return (
       <div className="nav-wrapper av-background">
         <NavBarInstance
+          navItems={navItems}
           appearance="subtle"
           activeKey={activeKey}
           onSelect={this.handleSelect}
