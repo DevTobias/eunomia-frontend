@@ -11,10 +11,12 @@ import React from 'react';
 
 import './Login.css';
 import {
-  Schema, FormGroup, FormControl, ControlLabel, Form, ButtonToolbar, Button,
+  Schema, FormGroup, FormControl, ControlLabel, Form, Button,
 } from 'rsuite';
-
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+
+import { serverName } from '../../app/constans';
 
 const { StringType } = Schema.Types;
 
@@ -60,7 +62,23 @@ export default class Login extends React.Component {
       console.error('Form Error');
       return;
     }
-    console.log(formValue, 'Form Value');
+    axios({
+      method: 'post',
+      data: {
+        email: formValue.email,
+        password: formValue.password,
+      },
+      withCredentials: true,
+      url: `${serverName}/users/login`,
+    }).then((res) => {
+      console.log(res);
+      // eslint-disable-next-line react/destructuring-assignment
+      // this.props.history.push('/eunomia-frontend/');
+      window.location.href = '/eunomia-frontend/';
+    })
+      .catch((error) => {
+        console.log(error.response);
+      });
   }
 
   render() {
@@ -96,15 +114,13 @@ export default class Login extends React.Component {
           <TextField name="email" label="Email Address" />
           <TextField name="password" label="Password" type="password" />
 
-          <ButtonToolbar style={{ alignContent: 'left' }}>
-            <Button
-              block
-              appearance="ghost"
-              onClick={this.handleSubmit}
-            >
-              Login
-            </Button>
-          </ButtonToolbar>
+          <Button
+            block
+            appearance="ghost"
+            onClick={this.handleSubmit}
+          >
+            Login
+          </Button>
 
           <p style={{ color: '#97969B', paddingTop: 20 }}>
             Not registered on Eunomia?

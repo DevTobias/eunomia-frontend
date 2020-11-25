@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/no-unused-state */
 /* eslint-disable no-return-assign */
@@ -5,21 +6,21 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable max-classes-per-file */
 
-/* eslint-disable no-console */
-
 import React from 'react';
 
 import './Register.css';
 import {
-  Schema, FormGroup, FormControl, ControlLabel, Form, ButtonToolbar, IconButton, Icon,
+  Schema, FormGroup, FormControl, ControlLabel, Form, IconButton, Icon,
 } from 'rsuite';
-
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+
+import { serverName } from '../../app/constans';
 
 const { StringType } = Schema.Types;
 
 const model = Schema.Model({
-  name: StringType().isRequired('This field is required.'),
+  fullname: StringType().isRequired('This field is required.'),
   email: StringType().isRequired('This field is required.')
     .isEmail('Please enter a valid email address.'),
   password: StringType().isRequired('This field is required.'),
@@ -52,7 +53,7 @@ export default class Register extends React.Component {
     super(props);
     this.state = {
       formValue: {
-        name: '',
+        fullname: '',
         email: '',
         password: '',
         verifyPassword: '',
@@ -65,10 +66,25 @@ export default class Register extends React.Component {
   handleSubmit() {
     const { formValue } = this.state;
     if (!this.form.check()) {
-      console.error('Form Error');
       return;
     }
-    console.log(formValue, 'Form Value');
+    axios({
+      method: 'post',
+      data: {
+        fullname: formValue.fullname,
+        email: formValue.email,
+        password: formValue.password,
+      },
+      withCredentials: true,
+      url: `${serverName}/users/register`,
+    }).then((res) => {
+      console.log(res);
+      // eslint-disable-next-line react/destructuring-assignment
+      this.props.history.push('/eunomia-frontend/login');
+    })
+      .catch((error) => {
+        console.log(error.response);
+      });
   }
 
   render() {
@@ -101,7 +117,7 @@ export default class Register extends React.Component {
           <h4> Sign Up for Eunomia </h4>
           <hr />
 
-          <TextField name="name" label="Full Name" autoComplete="off" />
+          <TextField name="fullname" label="Full Name" autoComplete="off" />
           <TextField name="email" label="Email Address" />
           <TextField name="password" label="Password" type="password" />
           <TextField name="verifyPassword" label="Verify Password" type="password" />
@@ -115,16 +131,14 @@ export default class Register extends React.Component {
             .
           </p>
 
-          <ButtonToolbar style={{ alignContent: 'left' }}>
-            <IconButton
-              block
-              appearance="ghost"
-              onClick={this.handleSubmit}
-              icon={<Icon className="fill-color" icon="user-plus" size="lg" />}
-            >
-              Join Now
-            </IconButton>
-          </ButtonToolbar>
+          <IconButton
+            onClick={this.handleSubmit}
+            block
+            appearance="ghost"
+            icon={<Icon className="fill-color" icon="user-plus" size="lg" />}
+          >
+            Join Now
+          </IconButton>
 
           <p style={{ color: '#97969B', paddingTop: 20 }}>
             Already have an account?

@@ -1,7 +1,10 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-console */
 import React from 'react';
 import {
   Switch, Route, BrowserRouter, Redirect,
 } from 'react-router-dom';
+import axios from 'axios';
 
 import MainNavbar from './navigation/Navbar.component';
 import Home from './home/Home.component';
@@ -10,6 +13,8 @@ import Login from './login/Login.component';
 import PrivateList from './private-list/PrivateList.component';
 import GroupList from './group-list/GroupList.component';
 import GroupLeaderboard from './group-leaderboard/GroupLeaderboard';
+
+import { serverName } from '../app/constans';
 
 import './App.css';
 
@@ -40,19 +45,34 @@ const authNav = [
   },
 ];
 
-function isLoggedIn() {
-  return false;
-}
-
 export default function MainRouter() {
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+
+  React.useEffect(() => {
+    async function checkLoggedIn() {
+      await axios({
+        method: 'post',
+        withCredentials: true,
+        url: `${serverName}/users/is-authenticated`,
+      }).then((res) => {
+        console.log(res);
+        if (res.status !== 200) setIsLoggedIn(false);
+        else setIsLoggedIn(true);
+      }).catch((error) => {
+        console.log(error.response);
+        setIsLoggedIn(false);
+      });
+    }
+    checkLoggedIn();
+  }, []);
+
   return (
     <BrowserRouter>
       <Switch>
-
         <Route
           path="/eunomia-frontend/private-tasks"
           render={() => (
-            !isLoggedIn() ? (
+            !isLoggedIn ? (
               <Redirect to="/eunomia-frontend/login" />
             ) : (
               <div>
@@ -66,7 +86,7 @@ export default function MainRouter() {
         <Route
           path="/eunomia-frontend/group-tasks"
           render={() => (
-            !isLoggedIn() ? (
+            !isLoggedIn ? (
               <Redirect to="/eunomia-frontend/login" />
             ) : (
               <div>
@@ -80,7 +100,7 @@ export default function MainRouter() {
         <Route
           path="/eunomia-frontend/group-leaderboard"
           render={() => (
-            !isLoggedIn() ? (
+            !isLoggedIn ? (
               <Redirect to="/eunomia-frontend/login" />
             ) : (
               <div>
@@ -93,20 +113,12 @@ export default function MainRouter() {
 
         <Route
           path="/eunomia-frontend/register"
-          render={() => (
-            <div>
-              <Register />
-            </div>
-          )}
+          component={Register}
         />
 
         <Route
           path="/eunomia-frontend/login"
-          render={() => (
-            <div>
-              <Login />
-            </div>
-          )}
+          component={Login}
         />
 
         <Route
