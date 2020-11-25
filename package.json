@@ -2,7 +2,7 @@
   "name": "eunomia-frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://devtobias.github.io/eunomia-frontend/",
+  "homepage": "https://eunomia-frontend.herokuapp.com/register",
   "jest": {
     "collectCoverageFrom": [
       "!src/**/*.{js,jsx}",
