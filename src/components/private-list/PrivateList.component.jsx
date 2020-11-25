@@ -1,10 +1,14 @@
+/* eslint-disable no-console */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/no-unused-state */
 import React from 'react';
 import { IconButton, Icon, Notification } from 'rsuite';
+import axios from 'axios';
 
 import Settings from '../settings/Settings.component';
 import TaskList from '../list/List.component';
+
+import { serverName } from '../../app/constans';
 
 import './PrivateList.css';
 
@@ -14,41 +18,6 @@ const ListStyle = {
   display: 'flex',
   justifyContent: 'left',
 };
-
-const exampleList = [
-  {
-    title: 'Hong Kong independent travel',
-    icon: 'image',
-    creator: 'Yvnonne',
-    date: '2017.10.13 14:50',
-    checked: true,
-    tagColor: '#34C3FF',
-  },
-  {
-    title: 'Celebration of the Mid-Autumn festival',
-    icon: 'image',
-    creator: 'Daibiao',
-    date: '2017.10.13 14:50',
-    checked: false,
-    tagColor: '#FF9800',
-  },
-  {
-    title: 'Live to play basketball',
-    icon: 'film',
-    creator: 'Bidetoo',
-    date: '2017.10.13 14:50',
-    checked: false,
-    tagColor: '#34C3FF',
-  },
-  {
-    title: '2018 the legislature meeting broadcast live',
-    icon: 'film',
-    creator: 'Yvnonne',
-    date: '2017.10.13 14:50',
-    checked: false,
-    tagColor: '#673AB7',
-  },
-];
 
 function open(placement, func, val) {
   Notification[func]({
@@ -63,9 +32,21 @@ export default class PrivateList extends React.Component {
     this.handleAddClick = this.handleAddClick.bind(this);
     this.state = {
       lists: [
-        exampleList,
+        [],
       ],
     };
+  }
+
+  componentDidMount() {
+    axios({
+      method: 'post',
+      withCredentials: true,
+      url: `${serverName}/users/get-lists`,
+    }).then((res) => {
+      this.setState(() => ({ lists: res.data.lists }));
+    }).catch((error) => {
+      console.log(error);
+    });
   }
 
   handleAddClick() {
@@ -84,8 +65,8 @@ export default class PrivateList extends React.Component {
         <Settings />
         <div style={ListStyle}>
 
-          {lists.map((item, index) => (
-            <TaskList key={`list${index}`} id={`list${index}`} showDate data={item} />
+          {lists.map((_item, index) => (
+            <TaskList key={`list${index}`} id={`list${index}`} index={index} showDate data={lists} />
           ))}
 
           <IconButton

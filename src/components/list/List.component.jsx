@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/no-unused-state */
 /* eslint-disable react/jsx-props-no-spreading */
@@ -10,8 +11,11 @@ import {
   Notification, Progress,
 } from 'rsuite';
 import ContentEditable from 'react-contenteditable';
+import axios from 'axios';
 
 import { CirclePicker } from 'react-color';
+
+import { serverName } from '../../app/constans';
 
 import {
   listStyle, itemStyle, beforeStyle, checkedBeforeStyle, styleCenter, baseStyle,
@@ -32,7 +36,7 @@ function open(placement, func, val) {
 
 export default class TaskList extends React.Component {
   constructor({
-    showUser, showDate, id, data,
+    showUser, showDate, id, data, index,
   }) {
     super();
 
@@ -56,6 +60,7 @@ export default class TaskList extends React.Component {
     this.showDate = showDate;
     this.id = id;
     this.percentStep = 10;
+    this.index = index;
   }
 
   componentDidMount() {
@@ -64,29 +69,34 @@ export default class TaskList extends React.Component {
 
   handleSortEnd({ oldIndex, newIndex }) {
     const { data } = this.state;
-    const newData = [...data];
+    const newData = data;
     if (oldIndex === newIndex) {
-      if (newData[oldIndex].checked) {
-        newData[oldIndex].checked = false;
+      if (newData[this.index][oldIndex].checked) {
+        newData[this.index][oldIndex].checked = false;
         this.decline();
       } else {
-        newData[oldIndex].checked = true;
+        newData[this.index][oldIndex].checked = true;
         this.increase();
       }
     } else {
-      newData.splice(newIndex, 0, newData.splice(oldIndex, 1)[0]);
+      newData[this.index].splice(newIndex, 0, newData[this.index].splice(oldIndex, 1)[0]);
     }
 
-    this.setState(() => ({ data: newData }));
+    this.setState(() => ({ data: newData }), () => {
+      this.saveTasks();
+    });
   }
 
   handleRemoveClick(event) {
     const index = event.nativeEvent.target.parentNode.attributes.index.value;
     this.setState(({ data }) => {
       const newData = data;
-      newData.splice(index, 1);
+      newData[this.index].splice(index, 1);
       return { data: newData };
-    }, () => this.updatePercent());
+    }, () => {
+      this.updatePercent();
+      this.saveTasks();
+    });
 
     open('topEnd', 'success', 'Successfully deleted task');
     this.updatePercent();
@@ -105,10 +115,13 @@ export default class TaskList extends React.Component {
       };
 
       this.setState(({ data }) => {
-        const newData = [...data];
-        newData.push(newEntry);
+        const newData = data;
+        newData[this.index].push(newEntry);
         return { data: newData };
-      }, () => this.updatePercent());
+      }, () => {
+        this.updatePercent();
+        this.saveTasks();
+      });
 
       document.getElementById(this.id).value = '';
       open('topEnd', 'success', 'Successfully added task');
@@ -119,7 +132,8 @@ export default class TaskList extends React.Component {
     const index = event.currentTarget.attributes.index.value;
     const title = event.target.value;
     // eslint-disable-next-line react/destructuring-assignment
-    this.state.data[index].title = title;
+    this.state.data[this.index][index].title = title;
+    this.saveTasks();
   }
 
   handleChangeComplete(color) {
@@ -128,10 +142,10 @@ export default class TaskList extends React.Component {
 
   updatePercent() {
     const { data } = this.state;
-    if (data.length) {
-      this.percentStep = 100 / data.length;
+    if (data[this.index].length) {
+      this.percentStep = 100 / data[this.index].length;
       let count = 0;
-      data.forEach((element) => {
+      data[this.index].forEach((element) => {
         if (element.checked) count += 1;
       });
       this.changePercent(count * this.percentStep);
@@ -160,91 +174,109 @@ export default class TaskList extends React.Component {
     this.changePercent(this.state.percent + this.percentStep);
   }
 
+  saveTasks() {
+    axios({
+      method: 'post',
+      data: {
+        lists: this.state.data,
+      },
+      withCredentials: true,
+      url: `${serverName}/users/save-lists`,
+    }).then((res) => {
+      console.log(res);
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
   render() {
     const {
       percent, color, status, data,
     } = this.state;
 
     const colors = ['#B80000', '#DB3E00', '#FF9800', '#008B02', '#34C3FF', '#673AB7'];
+    if (this.index !== 0) {
+      return (
+        <List hover bordered sortable onSort={this.handleSortEnd} style={listStyle}>
+          <FlexboxGrid>
+            <FlexboxGrid.Item colspan={16}>
+              <Line percent={Math.round(percent)} strokeColor={color} status={status} />
+            </FlexboxGrid.Item>
+            <FlexboxGrid.Item colspan={8} style={{ padding: '10px 0' }}>
+              <CirclePicker
+                circleSize={14}
+                circleSpacing={7}
+                colors={colors}
+                onChangeComplete={this.handleChangeComplete}
+              />
+            </FlexboxGrid.Item>
+          </FlexboxGrid>
 
-    return (
-      <List hover bordered sortable onSort={this.handleSortEnd} style={listStyle}>
-        <FlexboxGrid>
-          <FlexboxGrid.Item colspan={16}>
-            <Line percent={Math.round(percent)} strokeColor={color} status={status} />
-          </FlexboxGrid.Item>
-          <FlexboxGrid.Item colspan={8} style={{ padding: '10px 0' }}>
-            <CirclePicker
-              circleSize={14}
-              circleSpacing={7}
-              colors={colors}
-              onChangeComplete={this.handleChangeComplete}
-            />
-          </FlexboxGrid.Item>
-        </FlexboxGrid>
+          <div>
+            <InputGroup style={inputStyles}>
+              <Input id={this.id} placeholder="Add Task" autoComplete="off" />
+              <InputGroup.Button onClick={this.handleAddClick} appearance="link" color="green">
+                <Icon icon="plus-square" />
+              </InputGroup.Button>
+            </InputGroup>
+          </div>
+          {(data[this.index]).map((item, ind) => (
+            <List.Item key={item.title} index={ind} style={itemStyle}>
+              <div style={item.checked
+                ? checkedBeforeStyle
+                : { ...beforeStyle, backgroundColor: item.tagColor }}
+              />
+              <FlexboxGrid>
 
-        <div>
-          <InputGroup style={inputStyles}>
-            <Input id={this.id} placeholder="Add Task" autoComplete="off" />
-            <InputGroup.Button onClick={this.handleAddClick} appearance="link" color="green">
-              <Icon icon="plus-square" />
-            </InputGroup.Button>
-          </InputGroup>
-        </div>
-        {data.map((item, index) => (
-          <List.Item key={item.title} index={index} style={itemStyle}>
-            <div style={item.checked
-              ? checkedBeforeStyle
-              : { ...beforeStyle, backgroundColor: data[index].tagColor }}
-            />
-            <FlexboxGrid>
+                {/* Front Icon
+                <FlexboxGrid.Item colspan={2} style={styleCenter}>
+                  <Icon icon={item.icon} style={iconStyle} />
+                </FlexboxGrid.Item>
+                */}
 
-              {/* Front Icon
-              <FlexboxGrid.Item colspan={2} style={styleCenter}>
-                <Icon icon={item.icon} style={iconStyle} />
-              </FlexboxGrid.Item>
-              */}
+                {/* Base information */}
+                <FlexboxGrid.Item
+                  colspan={21}
+                  style={{
+                    ...styleCenter,
+                    ...baseStyle,
+                  }}
+                >
+                  <ContentEditable
+                    spellCheck="false"
+                    style={item.checked ? checkedTitleStyle : titleStyle}
+                    innerRef={this.contentEditable}
+                    html={item.title}
+                    index={ind}
+                    disabled={false}
+                    onChange={this.handleEdit}
+                  />
 
-              {/* Base information */}
-              <FlexboxGrid.Item
-                colspan={21}
-                style={{
-                  ...styleCenter,
-                  ...baseStyle,
-                }}
-              >
-                <ContentEditable
-                  spellCheck="false"
-                  style={item.checked ? checkedTitleStyle : titleStyle}
-                  innerRef={this.contentEditable}
-                  html={item.title}
-                  index={index}
-                  disabled={false}
-                  onChange={this.handleEdit}
-                />
-
-                <div style={slimText}>
-                  <div>
-                    {this.showUser ? <Icon icon="user-o" style={{ paddingRight: 5 }} /> : null}
-                    {this.showUser ? ` ${item.creator}` : null}
+                  <div style={slimText}>
+                    <div>
+                      {this.showUser ? <Icon icon="user-o" style={{ paddingRight: 5 }} /> : null}
+                      {this.showUser ? ` ${item.creator}` : null}
+                    </div>
+                    {this.showDate ? <div style={date}>{item.date}</div> : null}
                   </div>
-                  {this.showDate ? <div style={date}>{item.date}</div> : null}
-                </div>
-              </FlexboxGrid.Item>
+                </FlexboxGrid.Item>
 
-              {/* Button Group */}
-              <FlexboxGrid.Item colspan={3} style={{ ...styleCenter }}>
-                <ButtonGroup>
-                  {/* <IconButton index={index} appearance="link" icon={<Icon icon="eye" />} /> */}
-                  {/* <IconButton index={index} onClick={this.handleEditClick}
-                  appearance="link" icon={<Icon icon="edit" />} /> */}
-                  <IconButton index={index} onClick={this.handleRemoveClick} appearance="link" color="red" icon={<Icon icon="close" />} />
-                </ButtonGroup>
-              </FlexboxGrid.Item>
-            </FlexboxGrid>
-          </List.Item>
-        ))}
-      </List>
-    );
+                {/* Button Group */}
+                <FlexboxGrid.Item colspan={3} style={{ ...styleCenter }}>
+                  <ButtonGroup>
+                    {/* <IconButton index={index} appearance="link"
+                    icon={<Icon icon="eye" />} /> */}
+                    {/* <IconButton index={index} onClick={this.handleEditClick}
+                    appearance="link" icon={<Icon icon="edit" />} /> */}
+                    <IconButton index={ind} onClick={this.handleRemoveClick} appearance="link" color="red" icon={<Icon icon="close" />} />
+                  </ButtonGroup>
+                </FlexboxGrid.Item>
+              </FlexboxGrid>
+            </List.Item>
+          ))}
+        </List>
+      );
+    }
+    return null;
   }
 }
