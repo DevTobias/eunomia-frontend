@@ -80,7 +80,7 @@ export default class Register extends React.Component {
     }).then((res) => {
       console.log(res);
       // eslint-disable-next-line react/destructuring-assignment
-      this.props.history.push('/eunomia-frontend/login');
+      this.props.history.push('/login');
     })
       .catch((error) => {
         console.log(error.response);

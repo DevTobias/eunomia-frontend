@@ -74,7 +74,7 @@ export default class Login extends React.Component {
       console.log(res);
       // eslint-disable-next-line react/destructuring-assignment
       // this.props.history.push('/eunomia-frontend/');
-      window.location.href = '/eunomia-frontend/';
+      window.location.href = '/';
     })
       .catch((error) => {
         console.log(error.response);
