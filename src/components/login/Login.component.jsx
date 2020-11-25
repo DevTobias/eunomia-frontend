@@ -125,7 +125,7 @@ export default class Login extends React.Component {
           <p style={{ color: '#97969B', paddingTop: 20 }}>
             Not registered on Eunomia?
             {' '}
-            <Link to="/eunomia-frontend/register" style={{ color: 'white', textDecoration: 'underline' }}>
+            <Link to="/register" style={{ color: 'white', textDecoration: 'underline' }}>
               Register here
             </Link>
             .

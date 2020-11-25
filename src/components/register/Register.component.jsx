@@ -143,7 +143,7 @@ export default class Register extends React.Component {
           <p style={{ color: '#97969B', paddingTop: 20 }}>
             Already have an account?
             {' '}
-            <Link to="/eunomia-frontend/login" style={{ color: 'white', textDecoration: 'underline' }}>
+            <Link to="/login" style={{ color: 'white', textDecoration: 'underline' }}>
               Login here
             </Link>
             .
