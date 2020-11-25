@@ -20,25 +20,25 @@ import './App.css';
 
 const authNav = [
   {
-    to: '/eunomia-frontend/',
+    to: '/',
     key: '1',
     icon: 'home',
     name: 'Home',
   },
   {
-    to: '/eunomia-frontend/private-tasks',
+    to: '/private-tasks',
     key: '2',
     icon: 'list',
     name: 'Private Tasks',
   },
   {
-    to: '/eunomia-frontend/group-tasks',
+    to: '/group-tasks',
     key: '3',
     icon: 'list',
     name: 'Group Tasks',
   },
   {
-    to: '/eunomia-frontend/group-leaderboard',
+    to: '/group-leaderboard',
     key: '4',
     icon: 'star',
     name: 'Group Leaderboard',
@@ -70,10 +70,10 @@ export default function MainRouter() {
     <BrowserRouter>
       <Switch>
         <Route
-          path="/eunomia-frontend/private-tasks"
+          path="/private-tasks"
           render={() => (
             !isLoggedIn ? (
-              <Redirect to="/eunomia-frontend/login" />
+              <Redirect to="/login" />
             ) : (
               <div>
                 <MainNavbar navItems={authNav} />
@@ -84,10 +84,10 @@ export default function MainRouter() {
         />
 
         <Route
-          path="/eunomia-frontend/group-tasks"
+          path="/group-tasks"
           render={() => (
             !isLoggedIn ? (
-              <Redirect to="/eunomia-frontend/login" />
+              <Redirect to="/login" />
             ) : (
               <div>
                 <MainNavbar navItems={authNav} />
@@ -98,10 +98,10 @@ export default function MainRouter() {
         />
 
         <Route
-          path="/eunomia-frontend/group-leaderboard"
+          path="/group-leaderboard"
           render={() => (
             !isLoggedIn ? (
-              <Redirect to="/eunomia-frontend/login" />
+              <Redirect to="/login" />
             ) : (
               <div>
                 <MainNavbar navItems={authNav} />
@@ -112,17 +112,17 @@ export default function MainRouter() {
         />
 
         <Route
-          path="/eunomia-frontend/register"
+          path="/register"
           component={Register}
         />
 
         <Route
-          path="/eunomia-frontend/login"
+          path="/login"
           component={Login}
         />
 
         <Route
-          path="/eunomia-frontend/"
+          path="/"
           render={() => (
             <div>
               <MainNavbar navItems={authNav} />

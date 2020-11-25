@@ -32,7 +32,7 @@ const NavBarInstance = ({
     <Navbar appearance={appearance} style={navStyle}>
 
       <Navbar.Header style={headerStyle} className="navbar-brand logo">
-        <Link to="/eunomia-frontend/">
+        <Link to="/">
           <img
             alt="logo"
             src={`${process.env.PUBLIC_URL}/logo.svg`}
