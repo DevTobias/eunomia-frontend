@@ -36,7 +36,7 @@ function open(placement, func, val) {
 
 export default class TaskList extends React.Component {
   constructor({
-    showUser, showDate, id, data, index,
+    showUser, showDate, id, data, index, group,
   }) {
     super();
 
@@ -61,11 +61,16 @@ export default class TaskList extends React.Component {
     this.id = id;
     this.percentStep = 10;
     this.index = index;
+    this.group = group;
+    this.user = 'Tobias';
   }
 
   componentDidMount() {
+    this.getUserName();
     this.updatePercent();
   }
+
+  componentDidUpdate() { }
 
   handleSortEnd({ oldIndex, newIndex }) {
     const { data } = this.state;
@@ -108,8 +113,8 @@ export default class TaskList extends React.Component {
       const newEntry = {
         title: val,
         icon: 'image',
-        creator: 'Yvnonne',
-        date: '2017.10.13 14:50',
+        creator: this.user,
+        date: '26.11.2020',
         checked: false,
         tagColor: this.state.tagColor,
       };
@@ -138,6 +143,19 @@ export default class TaskList extends React.Component {
 
   handleChangeComplete(color) {
     this.setState({ tagColor: color.hex });
+  }
+
+  async getUserName() {
+    await axios({
+      method: 'get',
+      withCredentials: true,
+      url: `${serverName}/users/get-name`,
+    }).then((res) => {
+      this.user = res.data.fullname;
+    }).catch((error) => {
+      console.log(error);
+    });
+    // return 'Tobias';
   }
 
   updatePercent() {
@@ -175,13 +193,16 @@ export default class TaskList extends React.Component {
   }
 
   saveTasks() {
+    let request = '/users/save-lists';
+    if (this.group) request = '/group/save-list';
     axios({
       method: 'post',
       data: {
         lists: this.state.data,
+        groupName: 'eunomia-team',
       },
       withCredentials: true,
-      url: `${serverName}/users/save-lists`,
+      url: `${serverName}${request}`,
     }).then((res) => {
       console.log(res);
     }).catch((error) => {

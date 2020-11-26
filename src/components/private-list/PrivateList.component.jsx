@@ -66,7 +66,7 @@ export default class PrivateList extends React.Component {
         <div style={ListStyle}>
 
           {lists.map((_item, index) => (
-            <TaskList key={`list${index}`} id={`list${index}`} index={index} showDate data={lists} />
+            <TaskList key={`list${index}`} id={`list${index}`} index={index} showDate data={lists} group={false} />
           ))}
 
           <IconButton
